@@ -27,6 +27,9 @@ app.use('/api/events', require('./routes/events'));
 
 
 //configurar el puerto
+
+PORT = process.env.PORT || 4000
+
 app.listen(PORT, () => {
     console.log(`Servidor corriendo en el puerto ${PORT}`);
 });
