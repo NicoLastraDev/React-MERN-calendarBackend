@@ -14,10 +14,6 @@ connectDB();
 
 //CORS
 app.use(cors())
-
-//ruta publica
-app.use(express.static('public'));
-
 //Lectura y parseo del body
 app.use(express.json());
 
@@ -25,7 +21,11 @@ app.use(express.json());
 //TODO: auth // crear, login renew
 app.use('/api/auth', require('./routes/auth'));
 app.use('/api/events', require('./routes/events'));
-app.get('*', (req, res) => {
+
+//ruta publica
+app.use(express.static('public'));
+
+app.use('/{*splat}', (req, res) => {
     res.sendFile(path.join(__dirname, 'public/index.html'));
 });
 
