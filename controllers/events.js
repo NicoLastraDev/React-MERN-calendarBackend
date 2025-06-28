@@ -18,12 +18,19 @@ const createEvent = async(req, res = response)=> {
 
   console.log(req.body);
 
-  const evento = new Evento(req.body);
+  const evento = new Evento({
+    title,
+    start,
+    end,
+    notes,
+    user: req.uid,
+  });
 
   try {
-    evento.user = req.uid
+    //evento.user = req.uid
 
     const eventoGuardado = await evento.save();
+    await eventoGuardado.populate('user', 'name')
 
     await eventoGuardado.save()
     res.status(201).json({
@@ -60,11 +67,13 @@ const updateEvent = async(req, res = response)=> {
 
     const nuevoEvento = {
       ...req.body,
-      user: req.uid,
+      //user: req.uid,
     }
 
     const eventoActualizado = await Evento.
     findByIdAndUpdate(eventoId, nuevoEvento, {new: true})
+
+    await eventoActualizado.populate('user','name')
 
     res.json({
       ok: true,
